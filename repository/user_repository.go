@@ -7,7 +7,7 @@ import (
 
 type UserRepository interface {
 	FindAll() (users []entity.User, err error)
-	FindByID() (user entity.User, err error)
+	FindByID(UserID uint64) (user entity.User, err error)
 	Delete(user entity.User) (err error)
 }
 
