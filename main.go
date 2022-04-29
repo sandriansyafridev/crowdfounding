@@ -2,14 +2,19 @@ package main
 
 import (
 	"github.com/sandriansyafridev/crowdfounding/app"
+	"github.com/sandriansyafridev/crowdfounding/repository"
 )
 
 var (
-	db, sqlDB = app.NewDB()
+	gormDB, sqlDB  = app.NewDB()
+	userRepository = repository.NewUserRepositoryImpl(gormDB)
 )
 
 func main() {
-	app.NewMigration(db)
-
+	app.InitializeMigration(gormDB)
 	defer sqlDB.Close()
+
+	r := app.NewRoute()
+	r.Run(":8080")
+
 }

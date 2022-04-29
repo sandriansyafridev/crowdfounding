@@ -31,3 +31,7 @@ func NewDB() (*gorm.DB, *sql.DB) {
 	return db, sqlDB
 
 }
+
+func InitializeMigration(gormDB *gorm.DB) {
+	NewMigration(gormDB)
+}
