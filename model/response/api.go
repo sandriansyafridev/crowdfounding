@@ -5,8 +5,8 @@ type meta struct {
 	Message string `json:"message"`
 }
 
-type api_response struct {
-	meta   meta        `json:"meta"`
-	data   interface{} `json:"data,omitempty"`
-	errors interface{} `json:"errrors,omitempty"`
+type ApiResponse struct {
+	Meta   meta        `json:"meta"`
+	Data   interface{} `json:"data,omitempty"`
+	Errors interface{} `json:"errrors,omitempty"`
 }

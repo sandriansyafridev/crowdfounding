@@ -10,5 +10,5 @@ type User struct {
 	Token            string `gorm:"type:varchar(255); null"`
 	PathProfileImage string `gorm:"type:varchar(255);default:default_profile_image.jpg; null;"`
 	CreatedAt        time.Time
-	UpdateAt         time.Time
+	UpdatedAt        time.Time
 }

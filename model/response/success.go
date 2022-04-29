@@ -1,11 +1,11 @@
 package response
 
-func ResponseSuccess(message string, data interface{}) api_response {
-	return api_response{
-		meta: meta{
+func ResponseSuccess(message string, data interface{}) ApiResponse {
+	return ApiResponse{
+		Meta: meta{
 			Status:  true,
 			Message: message,
 		},
-		data: data,
+		Data: data,
 	}
 }

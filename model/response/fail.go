@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func ResponseFail(message string, err interface{}) api_response {
+func ResponseFail(message string, err interface{}) ApiResponse {
 
 	errorMessage := fmt.Sprint(err)
 	ok := strings.Contains(errorMessage, "\n")
@@ -16,11 +16,11 @@ func ResponseFail(message string, err interface{}) api_response {
 		err = errorMessage
 	}
 
-	return api_response{
-		meta: meta{
+	return ApiResponse{
+		Meta: meta{
 			Status:  false,
 			Message: message,
 		},
-		errors: err,
+		Errors: err,
 	}
 }
