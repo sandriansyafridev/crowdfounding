@@ -28,6 +28,6 @@ func init() {
 func main() {
 	defer sqlDB.Close()
 
-	r := app.NewRoute(userController, authController)
+	r := app.NewRoute(userController, authController, userRepository, jwtService)
 	r.Run(":8080")
 }
