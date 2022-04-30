@@ -10,6 +10,7 @@ type UserRepository interface {
 	FindByID(UserID uint64) (user entity.User, err error)
 	FindByEmail(email string) (user entity.User, err error)
 	Delete(user entity.User) (err error)
+	Update(user entity.User) (entity.User, error)
 }
 
 type UserRepositoryImpl struct {
@@ -57,6 +58,15 @@ func (userRepository *UserRepositoryImpl) Delete(user entity.User) (err error) {
 		return err
 	} else {
 		return nil
+	}
+
+}
+func (userRepository *UserRepositoryImpl) Update(user entity.User) (entity.User, error) {
+
+	if err := userRepository.gormDB.Save(&user).Error; err != nil {
+		return user, err
+	} else {
+		return user, nil
 	}
 
 }

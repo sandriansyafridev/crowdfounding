@@ -8,5 +8,5 @@ type meta struct {
 type ApiResponse struct {
 	Meta   meta        `json:"meta"`
 	Data   interface{} `json:"data,omitempty"`
-	Errors interface{} `json:"errrors,omitempty"`
+	Errors interface{} `json:"errors,omitempty"`
 }

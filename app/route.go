@@ -17,6 +17,7 @@ func NewRoute(userController controller.UserController, authController controlle
 	userRoutes_v1.GET("/", userController.GetUsers)
 	userRoutes_v1.GET("/:id", userController.GetUserByID)
 	userRoutes_v1.DELETE("/:id", userController.Delete)
+	userRoutes_v1.POST("/profile-image", userController.UploadProfileImage)
 
 	return r
 }
