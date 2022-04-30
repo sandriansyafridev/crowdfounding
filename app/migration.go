@@ -8,5 +8,7 @@ import (
 func NewMigration(gormDB *gorm.DB) {
 	gormDB.AutoMigrate(
 		&entity.User{},
+		&entity.Campaign{},
+		&entity.CampaignImage{},
 	)
 }
