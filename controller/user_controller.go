@@ -80,6 +80,8 @@ func (userController *UserControllerImpl) UploadProfileImage(c *gin.Context) {
 		responseFail := response.ResponseFail("no file image upload", err)
 		c.JSON(http.StatusNotFound, responseFail)
 	} else {
+
+		//setup store file to directory
 		dst := "public/assets/images/users/"
 		fileName := fmt.Sprintf("profile-user-image-%d-%s", request.UserID, file.Filename)
 		pathProfileImage := dst + fileName

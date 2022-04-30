@@ -10,9 +10,11 @@ import (
 var (
 	gormDB, sqlDB = app.NewDB()
 
+	jwtService = service.NewJWTServiceImpl()
+
 	authRepository = repository.NewAuthRepositoryImpl(gormDB)
 	authService    = service.NewAuthRepositoryImpl(authRepository)
-	authController = controller.NewAuthControllerImpl(authService)
+	authController = controller.NewAuthControllerImpl(authService, jwtService)
 
 	userRepository = repository.NewUserRepositoryImpl(gormDB)
 	userService    = service.NewUserServiceImpl(userRepository)
