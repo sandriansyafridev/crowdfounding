@@ -84,21 +84,23 @@ func (userController *UserControllerImpl) UploadProfileImage(c *gin.Context) {
 		fileName := fmt.Sprintf("profile-user-image-%d-%s", request.UserID, file.Filename)
 		pathProfileImage := dst + fileName
 
+		//update profile image
+		request.PathProfileImage = pathProfileImage
+		if user, err := userController.UserService.UploadProfileImage(request); err != nil {
+			responseFail := response.ResponseFail("fail update profile image user", err)
+			c.JSON(http.StatusNotFound, responseFail)
+		} else {
+			responseSuccess := response.ResponseSuccess("succes update profile image user", gin.H{
+				"is_upload": true,
+				"user":      user,
+			})
+			c.JSON(http.StatusNotFound, responseSuccess)
+		}
+
+		//upload
 		if err := c.SaveUploadedFile(file, pathProfileImage); err != nil {
 			responseFail := response.ResponseFail("fail to upload profile image", err)
 			c.JSON(http.StatusNotFound, responseFail)
-		} else {
-			request.PathProfileImage = pathProfileImage
-			if user, err := userController.UserService.UploadProfileImage(request); err != nil {
-				responseFail := response.ResponseFail("fail update profile image user", err)
-				c.JSON(http.StatusNotFound, responseFail)
-			} else {
-				responseSuccess := response.ResponseSuccess("succes update profile image user", gin.H{
-					"is_upload": true,
-					"user":      user,
-				})
-				c.JSON(http.StatusNotFound, responseSuccess)
-			}
 		}
 
 	}
