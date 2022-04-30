@@ -8,8 +8,7 @@ import (
 func ResponseFail(message string, err interface{}) ApiResponse {
 
 	errorMessage := fmt.Sprint(err)
-	ok := strings.Contains(errorMessage, "\n")
-	if ok {
+	if ok := strings.Contains(errorMessage, "\n"); ok {
 		split := strings.Split(errorMessage, "\n")
 		err = split
 	} else {

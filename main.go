@@ -8,17 +8,24 @@ import (
 )
 
 var (
-	gormDB, sqlDB  = app.NewDB()
+	gormDB, sqlDB = app.NewDB()
+
+	authRepository = repository.NewAuthRepositoryImpl(gormDB)
+	authService    = service.NewAuthRepositoryImpl(authRepository)
+	authController = controller.NewAuthControllerImpl(authService)
+
 	userRepository = repository.NewUserRepositoryImpl(gormDB)
 	userService    = service.NewUserServiceImpl(userRepository)
 	userController = controller.NewUserControllerImpl(userService)
 )
 
-func main() {
+func init() {
 	app.InitializeMigration(gormDB)
+}
+
+func main() {
 	defer sqlDB.Close()
 
-	r := app.NewRoute(userController)
+	r := app.NewRoute(userController, authController)
 	r.Run(":8080")
-
 }

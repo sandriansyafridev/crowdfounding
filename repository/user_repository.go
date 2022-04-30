@@ -8,6 +8,7 @@ import (
 type UserRepository interface {
 	FindAll() (users []entity.User, err error)
 	FindByID(UserID uint64) (user entity.User, err error)
+	FindByEmail(email string) (user entity.User, err error)
 	Delete(user entity.User) (err error)
 }
 
@@ -32,6 +33,16 @@ func (userRepository *UserRepositoryImpl) FindAll() (users []entity.User, err er
 }
 func (userRepository *UserRepositoryImpl) FindByID(UserID uint64) (user entity.User, err error) {
 	if err = userRepository.gormDB.First(&user, UserID).Error; err != nil {
+		return user, err
+	} else if user.ID == 0 {
+		return user, err
+	} else {
+		return user, nil
+	}
+}
+
+func (userRepository *UserRepositoryImpl) FindByEmail(email string) (user entity.User, err error) {
+	if err = userRepository.gormDB.First(&user, "email = ?", email).Error; err != nil {
 		return user, err
 	} else if user.ID == 0 {
 		return user, err

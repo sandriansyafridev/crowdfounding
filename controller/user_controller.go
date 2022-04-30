@@ -33,7 +33,7 @@ func (userController *UserControllerImpl) GetUsers(c *gin.Context) {
 		c.JSON(http.StatusNotFound, responseFail)
 	} else {
 		responseSuccess := response.ResponseSuccess("success to get users", format.ToUsersResponse(users))
-		c.JSON(http.StatusNotFound, responseSuccess)
+		c.JSON(http.StatusOK, responseSuccess)
 	}
 
 }
@@ -49,7 +49,7 @@ func (userController *UserControllerImpl) GetUserByID(c *gin.Context) {
 			c.JSON(http.StatusNotFound, responseFail)
 		} else {
 			responseSuccess := response.ResponseSuccess("success to get users", format.ToUserResponse(user))
-			c.JSON(http.StatusNotFound, responseSuccess)
+			c.JSON(http.StatusOK, responseSuccess)
 		}
 	}
 
@@ -61,10 +61,10 @@ func (userController *UserControllerImpl) Delete(c *gin.Context) {
 	} else {
 		if userDeleted, err := userController.UserService.GetUserByID(uint64(UserID)); err != nil {
 			responseFail := response.ResponseFail("fail to fetch param user 'id'", err)
-			c.JSON(http.StatusNotFound, responseFail)
+			c.JSON(http.StatusOK, responseFail)
 		} else {
 			responseSuccess := response.ResponseSuccess("success to delete user", format.ToUserResponse(userDeleted))
-			c.JSON(http.StatusNotFound, responseSuccess)
+			c.JSON(http.StatusOK, responseSuccess)
 		}
 	}
 }
