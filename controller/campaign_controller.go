@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
 
@@ -12,6 +13,7 @@ import (
 
 type CampaignController interface {
 	GetCampaigns(c *gin.Context)
+	GetCampaign(c *gin.Context)
 }
 
 type CampaignControllerImpl struct {
@@ -45,6 +47,25 @@ func (campaignController *CampaignControllerImpl) GetCampaigns(c *gin.Context) {
 			c.JSON(http.StatusOK, responseSuccess)
 		}
 
+	}
+
+}
+
+func (campaignController *CampaignControllerImpl) GetCampaign(c *gin.Context) {
+
+	queryCampaignID := c.Param("id")
+	if queryCampaignID == "" {
+		responseFail := response.ResponseFail("campaign id no params", errors.New("no params"))
+		c.JSON(http.StatusNotFound, responseFail)
+	} else {
+		CampaignID, _ := strconv.Atoi(queryCampaignID)
+		if campaign, err := campaignController.CampaignService.GetCampaign(uint64(CampaignID)); err != nil {
+			responseFail := response.ResponseFail("fail to fetch campaign", err)
+			c.JSON(http.StatusNotFound, responseFail)
+		} else {
+			responseSuccess := response.ResponseSuccess("success to fetch campaign", format.ToCampaignDetailResponse(campaign))
+			c.JSON(http.StatusOK, responseSuccess)
+		}
 	}
 
 }

@@ -19,7 +19,7 @@ type CampaignResponse struct {
 	UpdatedAt         time.Time `json:"updated_at"`
 }
 
-func findIsPrimary(campaignImages *[]entity.CampaignImage) (path string) {
+func FindIsPrimary(campaignImages *[]entity.CampaignImage) (path string) {
 
 	if len(*campaignImages) != 0 {
 		for _, campaignImage := range *campaignImages {
@@ -43,7 +43,7 @@ func ToCampaignResponse(campaign entity.Campaign) (campaignResponse CampaignResp
 	campaignResponse.Name = campaign.Name
 	campaignResponse.ShortDesc = campaign.ShortDesc
 	campaignResponse.Slug = campaign.Slug
-	campaignResponse.PathCampaignImage = findIsPrimary(&campaign.CampaignImage)
+	campaignResponse.PathCampaignImage = FindIsPrimary(&campaign.CampaignImage)
 	campaignResponse.GoalAmount = campaign.GoalAmount
 	campaignResponse.CurrentAmount = campaign.CurrentAmount
 	campaignResponse.CreatedAt = campaign.CreatedAt
