@@ -19,6 +19,10 @@ var (
 	userRepository = repository.NewUserRepositoryImpl(gormDB)
 	userService    = service.NewUserServiceImpl(userRepository)
 	userController = controller.NewUserControllerImpl(userService)
+
+	campaignRepository = repository.NewCampaignRepositoryImpl(gormDB)
+	campaignService    = service.NewCampaignServiceImpl(campaignRepository)
+	campaignController = controller.NewCampaignControllerImpl(campaignService)
 )
 
 func init() {
@@ -28,6 +32,6 @@ func init() {
 func main() {
 	defer sqlDB.Close()
 
-	r := app.NewRoute(userController, authController, userRepository, jwtService)
+	r := app.NewRoute(jwtService, userRepository, authController, userController, campaignController)
 	r.Run(":8080")
 }
