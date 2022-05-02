@@ -6,6 +6,8 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/sandriansyafridev/crowdfounding/model/dto"
+	"github.com/sandriansyafridev/crowdfounding/model/entity"
 	"github.com/sandriansyafridev/crowdfounding/model/format"
 	"github.com/sandriansyafridev/crowdfounding/model/response"
 	"github.com/sandriansyafridev/crowdfounding/service"
@@ -14,6 +16,7 @@ import (
 type CampaignController interface {
 	GetCampaigns(c *gin.Context)
 	GetCampaign(c *gin.Context)
+	CreateCampaign(c *gin.Context)
 }
 
 type CampaignControllerImpl struct {
@@ -66,6 +69,28 @@ func (campaignController *CampaignControllerImpl) GetCampaign(c *gin.Context) {
 			responseSuccess := response.ResponseSuccess("success to fetch campaign", format.ToCampaignDetailResponse(campaign))
 			c.JSON(http.StatusOK, responseSuccess)
 		}
+	}
+
+}
+
+func (campaignController *CampaignControllerImpl) CreateCampaign(c *gin.Context) {
+
+	request := dto.CampaignCreateDTO{}
+	if err := c.ShouldBindJSON(&request); err != nil {
+		responseFail := response.ResponseFail("bad request", err)
+		c.JSON(http.StatusBadRequest, responseFail)
+	} else {
+
+		currentUser := c.MustGet("currentUser").(entity.User)
+		request.UserID = currentUser.ID
+		if campaign, err := campaignController.CampaignService.CreateCampaign(request); err != nil {
+			responseFail := response.ResponseFail("fail to create campaign", err)
+			c.JSON(http.StatusUnprocessableEntity, responseFail)
+		} else {
+			responseSuccess := response.ResponseSuccess("campaign created", format.ToCampaignResponse(campaign))
+			c.JSON(http.StatusOK, responseSuccess)
+		}
+
 	}
 
 }

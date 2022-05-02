@@ -21,13 +21,12 @@ type CampaignResponse struct {
 
 func FindIsPrimary(campaignImages *[]entity.CampaignImage) (path string) {
 
+	path = "default_campaign_image.jpg"
 	if len(*campaignImages) != 0 {
 		for _, campaignImage := range *campaignImages {
 			if campaignImage.IsPrimary {
 				path = campaignImage.PathCampaignImage
 				break
-			} else {
-				path = "default_campaign_image.jpg"
 			}
 		}
 	}

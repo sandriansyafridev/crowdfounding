@@ -43,6 +43,7 @@ func NewRoute(
 	campaignRoutes_v1 := v1.Group("campaigns")
 	campaignRoutes_v1.Use(middleware.AuthorizationMiddleware(userRepository, jwtService))
 	campaignRoutes_v1.GET("/", campaignController.GetCampaigns)
+	campaignRoutes_v1.POST("/", campaignController.CreateCampaign)
 	campaignRoutes_v1.GET("/:id", campaignController.GetCampaign)
 
 	return r
