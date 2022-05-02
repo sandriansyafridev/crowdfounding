@@ -17,6 +17,7 @@ type CampaignController interface {
 	GetCampaigns(c *gin.Context)
 	GetCampaign(c *gin.Context)
 	CreateCampaign(c *gin.Context)
+	UpdateCampaign(c *gin.Context)
 }
 
 type CampaignControllerImpl struct {
@@ -93,4 +94,25 @@ func (campaignController *CampaignControllerImpl) CreateCampaign(c *gin.Context)
 
 	}
 
+}
+
+func (campaignController *CampaignControllerImpl) UpdateCampaign(c *gin.Context) {
+	request := dto.CampaignUpdateDTO{}
+	if err := c.ShouldBindJSON(&request); err != nil {
+		responseFail := response.ResponseFail("bad request", err)
+		c.JSON(http.StatusBadRequest, responseFail)
+	} else {
+
+		CampaignID, _ := strconv.Atoi(c.Param("id"))
+		currentUser := c.MustGet("currentUser").(entity.User)
+		request.ID = uint64(CampaignID)
+		request.UserID = currentUser.ID
+		if campaign, err := campaignController.CampaignService.UpdateCampaign(request); err != nil {
+			responseFail := response.ResponseFail("fail to update campaign", err)
+			c.JSON(http.StatusUnprocessableEntity, responseFail)
+		} else {
+			responseSuccess := response.ResponseSuccess("campaign updated", format.ToCampaignResponse(campaign))
+			c.JSON(http.StatusOK, responseSuccess)
+		}
+	}
 }

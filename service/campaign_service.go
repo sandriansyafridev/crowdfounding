@@ -1,7 +1,9 @@
 package service
 
 import (
+	"errors"
 	"strings"
+	"time"
 
 	"github.com/sandriansyafridev/crowdfounding/model/dto"
 	"github.com/sandriansyafridev/crowdfounding/model/entity"
@@ -13,6 +15,7 @@ type CampaignService interface {
 	GetCampaign(CampaignID uint64) (campaign entity.Campaign, err error)
 	GetCampaignsByUserID(UserID uint64) (campaigns []entity.Campaign, err error)
 	CreateCampaign(request dto.CampaignCreateDTO) (entity.Campaign, error)
+	UpdateCampaign(request dto.CampaignUpdateDTO) (entity.Campaign, error)
 }
 
 type CampaignServiceImp struct {
@@ -68,6 +71,24 @@ func (campaignService *CampaignServiceImp) CreateCampaign(request dto.CampaignCr
 		return campaignCreated, err
 	} else {
 		return campaignCreated, nil
+	}
+
+}
+
+func (campaignService *CampaignServiceImp) UpdateCampaign(request dto.CampaignUpdateDTO) (entity.Campaign, error) {
+
+	if campaign, err := campaignService.FindByID(request.ID); err != nil {
+		return campaign, err
+	} else if ok := request.UserID == campaign.UserID; !ok {
+		return campaign, errors.New("not allow to updated campaign")
+	} else {
+		campaign.Name = strings.ToLower(request.Name)
+		campaign.ShortDesc = strings.ToLower(request.ShortDesc)
+		campaign.LongDesc = request.LongDesc
+		campaign.Perk = request.Perk
+		campaign.GoalAmount = request.GoalAmount
+		campaign.UpdatedAt = time.Now()
+		return campaign, nil
 	}
 
 }

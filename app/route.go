@@ -45,6 +45,7 @@ func NewRoute(
 	campaignRoutes_v1.GET("/", campaignController.GetCampaigns)
 	campaignRoutes_v1.POST("/", campaignController.CreateCampaign)
 	campaignRoutes_v1.GET("/:id", campaignController.GetCampaign)
+	campaignRoutes_v1.PUT("/:id", campaignController.UpdateCampaign)
 
 	return r
 }
